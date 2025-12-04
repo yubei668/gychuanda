@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光遇每日穿搭推荐 | Sky Outfit Daily</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 自定义配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sky: {
+                            light: '#E0F7FF',
+                            mid: '#81D4FA',
+                            dark: '#0288D1',
+                            accent: '#5C6BC0'
+                        },
+                        star: {
+                            gold: '#FFD740',
+                            silver: '#E0E0E0'
+                        }
+                    },
+                    fontFamily: {
+                        sky: ['"Segoe UI"', 'Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'twinkle': 'twinkle 2s ease-in-out infinite alternate',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        twinkle: {
+                            '0%': { opacity: 0.6 },
+                            '100%': { opacity: 1 }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0, transform: 'translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .text-shadow-lg {
+                text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            .bg-glass {
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .star {
+                position: absolute;
+                background: white;
+                border-radius: 50%;
+                animation: twinkle 2s infinite alternate;
+            }
+            .outfit-img {
+                object-fit: cover;
+                transition: transform 0.3s ease;
+            }
+            .outfit-card:hover .outfit-img {
+                transform: scale(1.05);
+            }
+            .subcategory-tag {
+                background: rgba(255, 255, 255, 0.1);
+                color: #E0F7FF;
+                font-size: 10px;
+                padding: 2px 6px;
+                border-radius: 10px;
+                position: absolute;
+                top: 8px;
+                right: 8px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sky bg-gradient-to-b from-sky-dark to-sky-accent min-h-screen overflow-x-hidden relative">
+    <!-- 星空背景 -->
+    <div id="stars" class="fixed inset-0 z-0"></div>
+    
+    <!-- 云朵装饰 -->
+    <div class="fixed top-20 left-10 w-32 h-16 bg-white/30 rounded-full blur-xl animate-float z-0"></div>
+    <div class="fixed top-40 right-20 w-48 h-24 bg-white/20 rounded-full blur-xl animate-float" style="animation-delay: 1s"></div>
+    <div class="fixed bottom-20 left-1/4 w-64 h-32 bg-white/10 rounded-full blur-xl animate-float" style="animation-delay: 2s"></div>
+
+    <!-- 页面容器 -->
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- 标题区域 -->
+        <header class="text-center mb-12 pt-8">
+            <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-white text-shadow-lg mb-4">
+                光遇每日穿搭推荐
+            </h1>
+            <p class="text-sky-light text-[clamp(1rem,2vw,1.2rem)] max-w-2xl mx-auto">
+                解锁专属你的Sky潮流搭配，每次都是不一样的惊喜～
+            </p>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="max-w-6xl mx-auto">
+            <!-- 领取按钮卡片 -->
+            <div id="claim-card" class="bg-glass rounded-2xl p-8 md:p-12 shadow-2xl mb-12 text-center transition-all duration-700 transform hover:scale-[1.02]">
+                <div class="mb-8">
+                    <i class="fa fa-gift text-star-gold text-6xl md:text-8xl animate-float"></i>
+                </div>
+                <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-semibold text-white text-shadow mb-6">
+                    点击领取今日随机穿搭
+                </h2>
+                <button id="claim-btn" class="bg-star-gold hover:bg-star-gold/90 text-sky-dark font-bold py-4 px-10 rounded-full text-lg md:text-xl shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-star-gold/50">
+                    <i class="fa fa-hand-pointer-o mr-2"></i>随机领取
+                </button>
+            </div>
+
+            <!-- 穿搭展示卡片 (初始隐藏) -->
+            <div id="outfit-card" class="bg-glass rounded-2xl p-8 md:p-12 shadow-2xl mb-12 opacity-0 scale-95 transition-all duration-700 hidden">
+                <h2 class="text-[clamp(1.3rem,2.5vw,1.8rem)] font-semibold text-white text-shadow text-center mb-8">
+                    <i class="fa fa-star text-star-gold mr-2"></i>今日专属随机穿搭
+                </h2>
+
+                <!-- 穿搭清单（5大类布局，含子分类） -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
+                    <!-- 1. 发型大类（含发型、帽子、头饰，无冲突） -->
+                    <div class="col-span-1">
+                        <h3 class="text-white font-medium text-center mb-4 text-lg">发型</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div id="hairstyle-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.1s">
+                                <span class="subcategory-tag">发型</span>
+                                <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="发型" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                            <div id="hat-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.2s">
+                                <span class="subcategory-tag">帽子</span>
+                                <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="帽子" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                            <div id="headwear-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.3s">
+                                <span class="subcategory-tag">头饰</span>
+                                <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="头饰" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. 服装大类（核心修改：裤鞋组合/套装二选一） -->
+                    <div class="col-span-1">
+                        <h3 class="text-white font-medium text-center mb-4 text-lg">服装</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div id="clothes-main-container" class="animate-fade-in" style="animation-delay: 0.4s">
+                                <!-- 套装（1个分类，单独显示） -->
+                                <div id="suit-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 relative hidden">
+                                    <span class="subcategory-tag">套装</span>
+                                    <div class="h-64 overflow-hidden bg-sky-dark/30">
+                                        <img src="" alt="套装" class="w-full h-full outfit-img">
+                                    </div>
+                                    <div class="p-3">
+                                        <p class="text-sky-light text-center text-sm"></p>
+                                    </div>
+                                </div>
+                                
+                                <!-- 裤鞋组合（2个分类，同时显示） -->
+                                <div id="pants-shoes-container" class="grid grid-cols-1 gap-4 hidden">
+                                    <div id="pants-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 relative">
+                                        <span class="subcategory-tag">裤子</span>
+                                        <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                            <img src="" alt="裤子" class="w-full h-full outfit-img">
+                                        </div>
+                                        <div class="p-3">
+                                            <p class="text-sky-light text-center text-sm"></p>
+                                        </div>
+                                    </div>
+                                    <div id="shoes-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 relative">
+                                        <span class="subcategory-tag">鞋子</span>
+                                        <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                            <img src="" alt="鞋子" class="w-full h-full outfit-img">
+                                        </div>
+                                        <div class="p-3">
+                                            <p class="text-sky-light text-center text-sm"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. 面具大类（含面具、项链、眼镜，无冲突） -->
+                    <div class="col-span-1">
+                        <h3 class="text-white font-medium text-center mb-4 text-lg">面具</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div id="mask-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.5s">
+                                <span class="subcategory-tag">面具</span>
+                                <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="面具" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                            <div id="necklace-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.6s">
+                                <span class="subcategory-tag">项链</span>
+                                <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="项链" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                            <div id="glasses-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.7s">
+                                <span class="subcategory-tag">眼镜</span>
+                                <div class="h-40 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="眼镜" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. 斗篷大类（无子类，单独显示） -->
+                    <div class="col-span-1">
+                        <h3 class="text-white font-medium text-center mb-4 text-lg">斗篷</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div id="cape-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.8s">
+                                <div class="h-64 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="斗篷" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. 背饰大类（含家具类、琴类、玩偶类，冲突） -->
+                    <div class="col-span-1">
+                        <h3 class="text-white font-medium text-center mb-4 text-lg">背饰</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div id="accessory-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.9s">
+                                <span class="subcategory-tag">背饰</span>
+                                <div class="h-64 overflow-hidden bg-sky-dark/30">
+                                    <img src="" alt="背饰" class="w-full h-full outfit-img">
+                                </div>
+                                <div class="p-3">
+                                    <p class="text-sky-light text-center text-sm"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 随机穿搭评价 -->
+                <div class="bg-white/5 rounded-xl p-6 border border-white/10">
+                    <h3 class="text-white font-medium mb-3 flex items-center">
+                        <i class="fa fa-comment text-star-gold mr-2"></i>穿搭评价
+                    </h3>
+                    <p id="random-comment" class="text-sky-light leading-relaxed">
+                    </p>
+                </div>
+
+                <!-- 核心修改1：穿搭卡片内水印（彻底移除"水印"二字） -->
+                <div class="mt-8 text-right">
+                    <span class="inline-block bg-star-gold/20 text-star-gold px-4 py-1 rounded-full text-sm font-medium">
+                        sky小贝原创制作
+                    </span>
+                </div>
+
+                <!-- 重新随机按钮 -->
+                <div class="mt-8 text-center">
+                    <button id="refresh-btn" class="bg-sky-light/80 hover:bg-sky-light text-sky-dark font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                        <i class="fa fa-refresh mr-2"></i>重新随机
+                    </button>
+                </div>
+            </div>
+
+            <!-- 明日预告 -->
+            <div class="bg-glass/50 rounded-2xl p-6 text-center">
+                <p class="text-white/80 mb-4">想获取更多随机穿搭灵感？</p>
+                <button class="bg-sky-accent/80 hover:bg-sky-accent text-white font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                    <i class="fa fa-calendar-o mr-2"></i>每日定时更新
+                </button>
+            </div>
+        </main>
+
+        <!-- 页脚：核心修改2（删除"水印："前缀，统一文本） -->
+        <footer class="mt-16 text-center text-sky-light/70 text-sm pb-8">
+            <p>© 2025 Sky 光遇穿搭推荐 | sky小贝原创制作</p>
+        </footer>
+    </div>
+
+    <!-- 脚本 -->
+    <script>
+        // ================= 核心配置：图片路径+子分类规则 =================
+        // 1. 文件夹路径配置（5大类+子分类）
+        const folderPaths = {
+            // 发型大类（3个子分类）
+            hairstyle: "./本地图片/发型/发型",
+            hat: "./本地图片/发型/帽子",
+            headwear: "./本地图片/发型/头饰",  // 修正路径，添加./
+            
+            // 服装大类（3个子分类）
+            pants: "./本地图片/服装/裤子",
+            shoes: "./本地图片/服装/鞋子",
+            suit: "./本地图片/服装/套装",
+            
+            // 面具大类（3个子分类）
+            mask: "./本地图片/面具/面具",  // 修正路径，添加./
+            necklace: "./本地图片/面具/项链",  // 修正路径，添加./
+            glasses: "./本地图片/面具/眼镜",  // 修正路径，添加./
+            
+            // 斗篷大类（无子类）
+            cape: "./本地图片/斗篷",  // 修正路径，添加./
+            
+            // 背饰大类（3个子分类，冲突）
+            accessory_furniture: "./本地图片/背饰/家具类",  // 修正路径，添加./
+            accessory_piano: "./本地图片/背饰/琴类",  // 修正路径，添加./
+            accessory_doll: "./本地图片/背饰/玩偶类"  // 修正路径，添加./
+        };
+
+        // 2. 手动添加图片路径（名称自动提取）
+        const imageConfig = {
+            // 发型大类
+            // 修正语法错误，移除多余的逗号和]
+            hairstyle: Array.from({length: 174}, (_, i) => `./本地图片/发型/发型/image (${i+1}).jpg`),
+            hat: [
+                "./本地图片/发型/帽子/绒球帽.jpg",
+                "./本地图片/发型/帽子/巫师帽.jpg",
+                "./本地图片/发型/帽子/圣诞帽.jpg"
+            ],
+            headwear: [
+                "./本地图片/发型/头饰/羽毛发饰.jpg",
+                "./本地图片/发型/头饰/珍珠发箍.jpg",
+                "./本地图片/发型/头饰/星星发夹.jpg"
+            ],
+            
+            // 服装大类（保留3个子分类）
+            pants: [
+                "./本地图片/服装/裤子/武士裤.jpg",
+                "./本地图片/服装/裤子/工装裤.jpg",
+                "./本地图片/服装/裤子/亚麻长裤.jpg",
+                "./本地图片/服装/裤子/棉裤.jpg",
+                "./本地图片/服装/裤子/短裤.jpg"
+            ],
+            shoes: [
+                "./本地图片/服装/鞋子/皮鞋.jpg",
+                "./本地图片/服装/鞋子/靴子.jpg",
+                "./本地图片/服装/鞋子/凉鞋.jpg",
+                "./本地图片/服装/鞋子/运动鞋.jpg",
+                "./本地图片/服装/鞋子/雪地靴.jpg"
+            ],
+            suit: [
+                "./本地图片/服装/套装/小王子套装.jpg",
+                "./本地图片/服装/套装/巫师套装.jpg",
+                "./本地图片/服装/套装/圣诞套装.jpg",
+                "./本地图片/服装/套装/音韵套装.jpg",
+                "./本地图片/服装/套装/追光套装.jpg"
+            ],
+            
+            // 面具大类
+            mask: [
+                "./本地图片/面具/面具/狐狸面具.jpg",
+                "./本地图片/面具/面具/熊猫面具.jpg",  // 修正路径，添加./
+                "./本地图片/面具/面具/冰晶面具.jpg",  // 修正路径，添加./
+                "./本地图片/面具/面具/龙骨面具.jpg",  // 修正路径，添加./
+                "./本地图片/面具/面具/鸟嘴面具.jpg"   // 修正路径，添加./
+            ],
+            necklace: [
+                "./本地图片/面具/项链/珍珠项链.jpg",  // 修正路径，添加./
+                "./本地图片/面具/项链/星星项链.jpg",  // 修正路径，添加./
+                "./本地图片/面具/项链/水晶项链.jpg",  // 修正路径，添加./
+                "./本地图片/面具/项链/爱心项链.jpg",  // 修正路径，添加./
+                "./本地图片/面具/项链/蝴蝶项链.jpg"   // 修正路径，添加./
+            ],
+            glasses: [
+                "./本地图片/面具/眼镜/圆框眼镜.jpg",  // 修正路径，添加./
+                "./本地图片/面具/眼镜/墨镜.jpg",  // 修正路径，添加./
+                "./本地图片/面具/眼镜/星星眼镜.jpg",  // 修正路径，添加./
+                "./本地图片/面具/眼镜/爱心眼镜.jpg",  // 修正路径，添加./
+                "./本地图片/面具/眼镜/复古眼镜.jpg"   // 修正路径，添加./
+            ],
+            
+            // 斗篷大类
+            cape: [
+                "./本地图片/斗篷/彩虹斗篷.jpg",  // 修正路径，添加./
+                "./本地图片/斗篷/星盘蓝斗篷.jpg",  // 修正路径，添加./
+                "./本地图片/斗篷/黑色金边斗篷.jpg",  // 修正路径，添加./
+                "./本地图片/斗篷/红色斗篷.jpg",  // 修正路径，添加./
+                "./本地图片/斗篷/紫色斗篷.jpg",  // 修正路径，添加./
+                "./本地图片/斗篷/绿色斗篷.jpg"   // 修正路径，添加./
+            ],
+            
+            // 背饰大类（3个子分类）
+            accessory_furniture: [
+                "./本地图片/背饰/家具类/小桌子.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/家具类/椅子.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/家具类/灯笼.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/家具类/小床.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/家具类/书架.jpg"   // 修正路径，添加./
+            ],
+            accessory_piano: [
+                "./本地图片/背饰/琴类/钢琴.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/琴类/吉他.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/琴类/竖琴.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/琴类/手风琴.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/琴类/铃鼓.jpg"   // 修正路径，添加./
+            ],
+            accessory_doll: [
+                "./本地图片/背饰/玩偶类/小熊玩偶.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/玩偶类/兔子玩偶.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/玩偶类/星星玩偶.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/玩偶类/爱心玩偶.jpg",  // 修正路径，添加./
+                "./本地图片/背饰/玩偶类/恐龙玩偶.jpg"   // 修正路径，添加./
+            ]
+        };
+
+        // 3. 随机评价库（新增服装相关评价）
+        const comments = [
+            "这套搭配将发型、帽子、头饰完美融合，面部配饰增添细节感，背饰选择点睛之笔，整体风格统一又有层次～",
+            "随机生成的穿搭意外和谐！套装的整体性搭配简约头饰，既保留了套装的完整感，又不失精致细节，跑图拍照都合适～",
+            "个性十足的组合！独特的发型+眼镜搭配，裤子与鞋子的颜色呼应，背饰选择突显个人风格，让你在光遇世界脱颖而出～",
+            "温柔系穿搭太治愈了！柔软的发型+绒球帽，搭配珍珠项链和浅色斗篷，背饰选择小巧的玩偶，整体氛围温暖又舒适～",
+            "简约而不简单的搭配！基础发型+面具的经典组合，裤鞋搭配实用又美观，背饰选择增添一丝灵动，新手老玩家都能驾驭～",
+            "充满设计感的穿搭！头饰与项链的细节呼应，套装的独特风格，再加上合适的背饰，整体造型完整且有记忆点～",
+            "潮流感十足的搭配！个性发型+墨镜，裤鞋组合时尚又实用，背饰选择彰显态度，让你成为云海中最亮眼的光之子～",
+            "裤鞋组合太搭了！深色裤子与同色系鞋子形成呼应，搭配简约上衣风格，整体协调又耐看，跑图时行动也不受限～",
+            "这套套装太有辨识度了！独特的设计风格搭配配套发型，再加上小巧的背饰，出门一定是焦点，拍照超出片～",
+            "经典裤鞋搭配永不过时！基础款裤子+舒适鞋子，既适合日常跑图，又能搭配各种斗篷，实用性与美观度兼备～"
+        ];
+
+        // ================= 工具函数 =================
+        // 1. 提取图片名称（去除路径和后缀）
+        function getImageName(path) {
+            const fileName = path.split(/[\\/]/).pop();
+            return fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+        }
+
+        // 2. 随机获取一个分类的图片
+        function getRandomImage(category) {
+            const images = imageConfig[category];
+            const randomPath = images[Math.floor(Math.random() * images.length)];
+            return {
+                path: randomPath,
+                name: getImageName(randomPath)
+            };
+        }
+
+        // 3. 生成随机穿搭（核心修改：服装分类逻辑）
+        function generateRandomOutfit() {
+            // ===== 1. 发型大类（3个子分类，无冲突，全部显示）=====
+            const randomHairstyle = getRandomImage('hairstyle');
+            const randomHat = getRandomImage('hat');
+            const randomHeadwear = getRandomImage('headwear');
+            
+            updateItemDisplay('hairstyle-container', randomHairstyle.path, randomHairstyle.name);
+            updateItemDisplay('hat-container', randomHat.path, randomHat.name);
+            updateItemDisplay('headwear-container', randomHeadwear.path, randomHeadwear.name);
+
+            // ===== 2. 服装大类（核心修改：裤鞋组合/套装二选一）=====
+            const useSuit = Math.random() > 0.5; // 50%概率选套装，50%选裤鞋组合
+            
+            if (useSuit) {
+                // 显示「套装」（1个分类），隐藏裤鞋组合
+                const randomSuit = getRandomImage('suit');
+                document.getElementById('suit-container').classList.remove('hidden');
+                document.getElementById('pants-shoes-container').classList.add('hidden');
+                updateItemDisplay('suit-container', randomSuit.path, randomSuit.name);
+            } else {
+                // 显示「裤鞋组合」（2个分类），隐藏套装
+                const randomPants = getRandomImage('pants');
+                const randomShoes = getRandomImage('shoes');
+                document.getElementById('suit-container').classList.add('hidden');
+                document.getElementById('pants-shoes-container').classList.remove('hidden');
+                updateItemDisplay('pants-container', randomPants.path, randomPants.name);
+                updateItemDisplay('shoes-container', randomShoes.path, randomShoes.name);
+            }
+
+            // ===== 3. 面具大类（3个子分类，无冲突，全部显示）=====
+            const randomMask = getRandomImage('mask');
+            const randomNecklace = getRandomImage('necklace');
+            const randomGlasses = getRandomImage('glasses');
+            
+            updateItemDisplay('mask-container', randomMask.path, randomMask.name);
+            updateItemDisplay('necklace-container', randomNecklace.path, randomNecklace.name);
+            updateItemDisplay('glasses-container', randomGlasses.path, randomGlasses.name);
+
+            // ===== 4. 斗篷大类（无子类，直接显示）=====
+            const randomCape = getRandomImage('cape');
+            updateItemDisplay('cape-container', randomCape.path, randomCape.name);
+
+            // ===== 5. 背饰大类（3个子分类冲突，随机选一个）=====
+            const accessoryTypes = ['accessory_furniture', 'accessory_piano', 'accessory_doll'];
+            const randomAccessoryType = accessoryTypes[Math.floor(Math.random() * accessoryTypes.length)];
+            const randomAccessory = getRandomImage(randomAccessoryType);
+            updateItemDisplay('accessory-container', randomAccessory.path, randomAccessory.name);
+
+            // ===== 随机评价 =====
+            const randomComment = comments[Math.floor(Math.random() * comments.length)];
+            document.getElementById('random-comment').textContent = randomComment;
+        }
+
+        // 4. 更新单个物品显示（图片+名称）
+        function updateItemDisplay(containerId, imagePath, itemName) {
+            const container = document.getElementById(containerId);
+            const imgElement = container.querySelector('img');
+            const nameElement = container.querySelector('p');
+            
+            imgElement.src = imagePath;
+            imgElement.alt = itemName;
+            nameElement.textContent = itemName;
+        }
+
+        // ================= 星空背景创建 =================
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = window.innerWidth < 768 ? 50 : 100;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 3 + 1;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const delay = Math.random() * 3;
+                const opacity = Math.random() * 0.8 + 0.2;
+                
+                star.classList.add('star');
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.animationDelay = `${delay}s`;
+                star.style.opacity = opacity;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // ================= 页面交互 =================
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            
+            const claimBtn = document.getElementById('claim-btn');
+            const refreshBtn = document.getElementById('refresh-btn');
+            const claimCard = document.getElementById('claim-card');
+            const outfitCard = document.getElementById('outfit-card');
+            
+            // 领取按钮
+            claimBtn.addEventListener('click', () => {
+                claimCard.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    claimCard.classList.add('hidden');
+                    outfitCard.classList.remove('hidden');
+                    setTimeout(() => {
+                        outfitCard.classList.remove('opacity-0', 'scale-95');
+                        generateRandomOutfit();
+                    }, 50);
+                }, 500);
+            });
+            
+            // 重新随机按钮
+            refreshBtn.addEventListener('click', () => {
+                // 添加刷新动画
+                const allContainers = document.querySelectorAll('.outfit-card');
+                allContainers.forEach((container, index) => {
+                    container.style.opacity = '0.5';
+                    setTimeout(() => {
+                        container.style.opacity = '1';
+                    }, 200 + index * 50);
+                });
+                
+                setTimeout(generateRandomOutfit, 500);
+            });
+        });
+
+        // 窗口大小改变时重新创建星空
+        window.addEventListener('resize', () => {
+            document.getElementById('stars').innerHTML = '';
+            createStars();
+        });
+    </script>
+</body>
+</html>
