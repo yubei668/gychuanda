@@ -103,28 +103,28 @@
         max-width: min(100px, 20vw);
         margin: 0 4px 8px;
     }
-    /* 核心：大类容器独占一行，强制换行 */
+    /* 核心：大类容器独占一行，强制换行 - 缩小间距 */
     .main-category-grid {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 8px; /* 原20px 缩小为8px */
         width: 100%;
         padding-bottom: 16px;
     }
-    /* 每个大类容器独占一行，宽度100%（包含服装、斗篷+背饰） */
+    /* 每个大类容器独占一行，宽度100%（包含服装、斗篷+背饰）- 缩小间距 */
     .normal-category, .cape-accessory-group {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 12px 8px;
+        padding: 8px 8px; /* 原12px 缩小为8px */
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        margin-bottom: 8px;
+        margin-bottom: 4px; /* 原8px 缩小为4px */
     }
-    /* 大类标题左对齐，固定间距 */
+    /* 大类标题左对齐，固定间距 - 缩小间距 */
     .main-category-grid h3 {
         font-size: 1.15rem;
-        margin-bottom: 12px !important;
+        margin-bottom: 8px !important; /* 原12px 缩小为8px */
         color: #FFD740;
         padding-left: 4px;
         width: 100%;
@@ -358,11 +358,14 @@
                 </div>
             </div>
 
+            <!-- 修改：每日定时更新 改为 光遇人格测试 并添加跳转链接 -->
             <div class="bg-glass/50 rounded-2xl p-4 text-center max-w-full mx-auto">
-                <p class="text-white/80 mb-3 text-sm">想获取更多随机穿搭灵感？</p>
-                <button class="btn-mobile bg-sky-accent/80 hover:bg-sky-accent text-white font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
-                    <i class="fa fa-calendar-o mr-2"></i>每日定时更新
-                </button>
+                <p class="text-white/80 mb-3 text-sm">想解锁你的专属光遇人格？</p>
+                <a href="https://yubei668.github.io/guangyuceshi" target="_blank" rel="noopener noreferrer">
+                    <button class="btn-mobile bg-sky-accent/80 hover:bg-sky-accent text-white font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105">
+                        <i class="fa fa-user-circle-o mr-2"></i>光遇人格测试
+                    </button>
+                </a>
             </div>
         </main>
 
