@@ -53,156 +53,143 @@
         }
     </script>
     <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .text-shadow-lg {
-                text-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            }
-            .bg-glass {
-                background: rgba(255, 255, 255, 0.2);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-            }
-            .star {
-                position: absolute;
-                background: white;
-                border-radius: 50%;
-                animation: twinkle 2s infinite alternate;
-            }
-            /* ========== 核心调整：手机端适配 ========== */
-            /* 1. 图片容器适配手机屏幕（优先纵向） */
-            .outfit-img-container {
-                width: min(75vw, 160px); /* 手机端放大占比 */
-                height: min(75vw, 160px);
-                aspect-ratio: 1/1;
-                flex-shrink: 0;
-                margin: 0 auto;
-            }
-            .outfit-img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: transform 0.3s ease;
-            }
-            .outfit-card:hover .outfit-img {
-                transform: scale(1.05);
-            }
-            /* 2. 子分类标签适配手机 */
-            .subcategory-tag {
-                background: rgba(255, 255, 255, 0.1);
-                color: #E0F7FF;
-                font-size: 11px; /* 手机端稍放大标签 */
-                padding: 3px 8px;
-                border-radius: 12px;
-                position: absolute;
-                top: 8px;
-                right: 8px;
-                z-index: 10;
-            }
-            .will-change-transform {
-                will-change: transform;
-            }
-            /* 3. 卡片宽度完全适配手机屏幕 */
-            .outfit-card {
-                width: 100%;
-                max-width: min(75vw, 160px); /* 同步图片容器 */
-                margin: 0 auto 12px; /* 增加卡片底部间距 */
-            }
-            /* 4. 大类布局：手机端全纵向，加大间距提升呼吸感 */
-            .main-category-grid {
-                display: flex;
-                flex-direction: column;
-                gap: 24px; /* 手机端加大大类间距 */
-                width: 100%;
-                padding-bottom: 16px;
-            }
-            /* 5. 普通大类容器：手机端优化内边距 */
-            .normal-category {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 12px 4px; /* 减少左右内边距 */
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            /* 6. 斗篷+背饰组合：手机端强制纵向，取消横向 */
-            .cape-accessory-group {
-                width: 100%;
-                display: flex;
-                flex-direction: column; /* 手机端固定纵向 */
-                justify-content: center;
-                align-items: center;
-                padding: 12px 4px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                gap: 20px;
-            }
-            /* 7. 组合容器子项：手机端占满宽度 */
-            .cape-accessory-item {
-                width: 100%; /* 手机端占满宽度 */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            /* 8. 大类标题：手机端优化字号和间距 */
-            .main-category-grid h3 {
-                font-size: 1.15rem; /* 手机端标题稍大 */
-                margin-bottom: 16px !important;
-                color: #FFD740;
-            }
-            /* 9. 子类容器：手机端纯纵向，居中对齐 */
-            .normal-category > div,
-            .cape-accessory-item > div {
-                width: 100%;
-                max-width: 100%; /* 手机端取消最大宽度限制 */
-                display: flex;
-                flex-direction: column; /* 手机端强制纵向 */
-                flex-wrap: nowrap; /* 取消换行 */
-                justify-content: center;
-                align-items: center;
-                gap: 0; /* 取消横向间距，靠卡片自身margin */
-            }
-            /* 10. 按钮适配：手机端加大触控区域 */
-            .btn-mobile {
-                min-height: 48px; /* 符合手机触控最小尺寸 */
-                padding-left: 16px !important;
-                padding-right: 16px !important;
-                font-size: 16px !important; /* 加大按钮文字 */
-            }
-            /* ========== 媒体查询：大屏适配（仅平板/电脑） ========== */
-            @media (min-width: 640px) {
-                /* 平板/电脑端恢复原有横向布局 */
-                .outfit-img-container {
-                    width: min(60vw, 180px);
-                    height: min(60vw, 180px);
-                }
-                .outfit-card {
-                    max-width: min(60vw, 180px);
-                    margin: 0 auto;
-                }
-                .cape-accessory-group {
-                    flex-direction: row;
-                    justify-content: space-around;
-                    align-items: flex-start;
-                }
-                .cape-accessory-item {
-                    flex: 1;
-                    width: auto;
-                }
-                .normal-category > div,
-                .cape-accessory-item > div {
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    gap: 15px;
-                    max-width: 800px;
-                }
-                .subcategory-tag {
-                    font-size: 10px;
-                    padding: 2px 6px;
-                }
-            }
+@layer utilities {
+    /* 保留原有其他样式，仅修改以下布局相关部分 */
+    .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .text-shadow-lg {
+        text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .bg-glass {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 2s infinite alternate;
+    }
+    /* ========== 核心调整：统一手机/大屏布局逻辑 ========== */
+    /* 1. 图片容器适配（统一尺寸，不再区分手机/大屏） */
+    .outfit-img-container {
+        width: min(120px, 25vw); /* 缩小基础尺寸，适配多列 */
+        height: min(120px, 25vw);
+        aspect-ratio: 1/1;
+        flex-shrink: 0;
+        margin: 0 auto;
+    }
+    .outfit-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .outfit-card:hover .outfit-img {
+        transform: scale(1.05);
+    }
+    /* 2. 子分类标签（统一尺寸） */
+    .subcategory-tag {
+        background: rgba(255, 255, 255, 0.1);
+        color: #E0F7FF;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 12px;
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 10;
+    }
+    .will-change-transform {
+        will-change: transform;
+    }
+    /* 3. 卡片宽度（统一适配多列） */
+    .outfit-card {
+        width: 100%;
+        max-width: min(120px, 25vw);
+        margin: 0 8px 12px; /* 横向间距+纵向间距 */
+    }
+    /* 4. 大类布局（默认横向网格，手机端自适应换行） */
+    .main-category-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+        padding-bottom: 16px;
+    }
+    /* 5. 普通大类容器（统一布局） */
+    .normal-category {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 4px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    /* 6. 斗篷+背饰组合（默认横向，手机端换行） */
+    .cape-accessory-group {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: 12px 4px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 15px;
+        flex-wrap: wrap; /* 关键：手机端自动换行 */
+    }
+    /* 7. 组合容器子项（统一宽度） */
+    .cape-accessory-item {
+        flex: 1;
+        min-width: 150px; /* 手机端最小宽度，保证不挤 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /* 8. 大类标题（统一尺寸） */
+    .main-category-grid h3 {
+        font-size: 1.15rem;
+        margin-bottom: 16px !important;
+        color: #FFD740;
+    }
+    /* 9. 子类容器（核心：默认横向flex-wrap，手机端自动换行） */
+    .normal-category > div,
+    .cape-accessory-item > div {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: row; /* 横向排列 */
+        flex-wrap: wrap; /* 自动换行 */
+        justify-content: center;
+        align-items: center;
+        gap: 10px; /* 卡片间距 */
+    }
+    /* 10. 按钮适配（保留手机端触控优化） */
+    .btn-mobile {
+        min-height: 48px;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        font-size: 16px !important;
+    }
+    /* ========== 媒体查询：仅极小屏微调 ========== */
+    @media (max-width: 375px) {
+        /* 仅针对375px以下极小屏微调 */
+        .outfit-img-container {
+            width: min(100px, 30vw);
+            height: min(100px, 30vw);
         }
+        .outfit-card {
+            max-width: min(100px, 30vw);
+        }
+        .cape-accessory-group {
+            gap: 10px;
+        }
+        .cape-accessory-item {
+            min-width: 120px;
+        }
+    }
+}
     </style>
 </head>
 <body class="font-sky bg-gradient-to-b from-sky-dark to-sky-accent min-h-screen overflow-x-hidden relative pb-12">
@@ -1630,3 +1617,4 @@ if (tagElement) {
     </script>
 </body>
 </html>
+
