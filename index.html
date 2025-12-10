@@ -1452,24 +1452,29 @@ const imageConfig = {
             // 4. 处理斗篷大类
             setRandomItem('cape');
 
-            // 5. 处理背饰大类（三选一）
-            const accessoryTypes = ['accessory_furniture', 'accessory_piano', 'accessory_doll'];
-            const randomAccessoryType = getRandomItem(accessoryTypes);
-            const accessoryItem = getRandomItem(imageConfig[randomAccessoryType]);
-            const accessoryPath = `${folderPaths[randomAccessoryType]}/${accessoryItem}`;
-            
-            const accessoryContainer = document.getElementById('accessory-container');
-            accessoryContainer.querySelector('img').src = accessoryPath;
-            accessoryContainer.querySelector('p').textContent = accessoryItem.split('.')[0];
-            
-            // 设置子分类标签文本
-            let accessoryTag = '';
-            switch(randomAccessoryType) {
-                case 'accessory_furniture': accessoryTag = '家具类'; break;
-                case 'accessory_piano': accessoryTag = '琴类'; break;
-                case 'accessory_doll': accessoryTag = '玩偶类'; break;
-            }
-            accessoryContainer.querySelector('.subcategory-tag').textContent = accessoryTag;
+// 5. 处理背饰大类（三选一）
+const accessoryTypes = ['accessory_furniture', 'accessory_piano', 'accessory_doll'];
+const randomAccessoryType = getRandomItem(accessoryTypes);
+const accessoryItem = getRandomItem(imageConfig[randomAccessoryType]);
+// 关键修复：对中文文件名做URL编码
+const encodedItemName = encodeURIComponent(accessoryItem);
+const accessoryPath = `${folderPaths[randomAccessoryType]}/${encodedItemName}`;
+
+const accessoryContainer = document.getElementById('accessory-container');
+accessoryContainer.querySelector('img').src = accessoryPath;
+accessoryContainer.querySelector('p').textContent = accessoryItem.split('.')[0];
+
+// 设置子分类标签文本（增加容错）
+let accessoryTag = '';
+switch(randomAccessoryType) {
+    case 'accessory_furniture': accessoryTag = '家具类'; break;
+    case 'accessory_piano': accessoryTag = '琴类'; break;
+    case 'accessory_doll': accessoryTag = '玩偶类'; break;
+}
+const tagElement = accessoryContainer.querySelector('.subcategory-tag');
+if (tagElement) {
+    tagElement.textContent = accessoryTag;
+}
 
             // 设置随机评价
             document.getElementById('random-comment').textContent = getRandomItem(outfitComments);
@@ -1511,6 +1516,7 @@ const imageConfig = {
 </body>
 
 </html>
+
 
 
 
