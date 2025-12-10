@@ -70,10 +70,10 @@
                 border-radius: 50%;
                 animation: twinkle 2s infinite alternate;
             }
-            /* 核心：1:1比例，同比缩放（最大220px，适配横向布局） */
+            /* 核心调整：图片整体缩小（最大160px）+ 1:1比例 */
             .outfit-img-container {
-                width: min(70vw, 220px);
-                height: min(70vw, 220px); /* 严格1:1 */
+                width: min(60vw, 160px); /* 缩小至最大160px */
+                height: min(60vw, 160px); /* 严格1:1 */
                 aspect-ratio: 1/1; /* 兜底保证比例 */
                 flex-shrink: 0;
                 margin: 0 auto;
@@ -101,33 +101,58 @@
             .will-change-transform {
                 will-change: transform;
             }
-            /* 适配横向五大类布局，卡片宽度自适应 */
+            /* 核心调整：卡片宽度适配缩小后的图片 */
             .outfit-card {
                 width: 100%;
-                max-width: min(70vw, 220px);
+                max-width: min(60vw, 160px); /* 同步缩小至160px */
                 margin: 0 auto;
             }
-            /* 五大类容器样式：强制横向排列，自适应宽度 */
+            /* 核心：强制五大类单横排（不换行）+ 横向滚动兜底 */
             .main-category-grid {
-                display: grid;
-                grid-template-columns: repeat(5, 1fr);
-                gap: 10px;
+                display: flex; /* 改用flex强制单行 */
+                flex-wrap: nowrap; /* 禁止换行 */
+                gap: 8px; /* 缩小间距适配单行 */
                 width: 100%;
+                overflow-x: auto; /* 小屏时允许横向滚动，保证单行 */
+                padding-bottom: 10px; /* 滚动条预留空间 */
+                -ms-overflow-style: none; /* 隐藏IE滚动条 */
+                scrollbar-width: none; /* 隐藏Firefox滚动条 */
             }
-            /* 响应式适配：小屏自动换行 */
-            @media (max-width: 1200px) {
-                .main-category-grid {
-                    grid-template-columns: repeat(3, 1fr);
-                }
+            /* 隐藏Chrome等滚动条 */
+            .main-category-grid::-webkit-scrollbar {
+                display: none;
             }
+            /* 每个大类容器强制等分宽度 */
+            .main-category-grid > div {
+                flex: 1 0 20%; /* 5个大类各占20%，强制单行 */
+                min-width: 120px; /* 最小宽度兜底，避免过度压缩 */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            /* 适配小屏：仅调整最小宽度，仍保持单行 */
             @media (max-width: 768px) {
-                .main-category-grid {
-                    grid-template-columns: repeat(2, 1fr);
+                .main-category-grid > div {
+                    min-width: 100px;
+                }
+                .outfit-img-container {
+                    width: min(50vw, 120px); /* 小屏进一步缩小至120px */
+                    height: min(50vw, 120px);
+                }
+                .outfit-card {
+                    max-width: min(50vw, 120px);
                 }
             }
             @media (max-width: 480px) {
-                .main-category-grid {
-                    grid-template-columns: 1fr;
+                .main-category-grid > div {
+                    min-width: 80px;
+                }
+                .outfit-img-container {
+                    width: min(40vw, 100px); /* 超小屏缩小至100px */
+                    height: min(40vw, 100px);
+                }
+                .outfit-card {
+                    max-width: min(40vw, 100px);
                 }
             }
         }
@@ -175,10 +200,10 @@
                     <i class="fa fa-star text-star-gold mr-2"></i>今日专属随机穿搭
                 </h2>
 
-                <!-- 穿搭清单：五大类横向排列，子类纵向展示 -->
+                <!-- 穿搭清单：强制五大类单横排，子类纵向展示 -->
                 <div class="main-category-grid mb-8">
                     <!-- 1. 发型大类（含发型、帽子、头饰，无冲突） -->
-                    <div class="col-span-1 flex flex-col items-center">
+                    <div>
                         <h3 class="text-white font-medium text-center mb-4 text-lg">发型</h3>
                         <!-- 子类纵向排列 -->
                         <div class="flex flex-col gap-4 w-full">
@@ -213,7 +238,7 @@
                     </div>
 
                     <!-- 2. 服装大类（核心修改：裤鞋组合/套装二选一） -->
-                    <div class="col-span-1 flex flex-col items-center">
+                    <div>
                         <h3 class="text-white font-medium text-center mb-4 text-lg">服装</h3>
                         <!-- 子类纵向排列 -->
                         <div id="clothes-main-container" class="flex flex-col gap-4 w-full animate-fade-in" style="animation-delay: 0.4s">
@@ -253,7 +278,7 @@
                     </div>
 
                     <!-- 3. 面具大类（含面具、项链、眼镜，无冲突） -->
-                    <div class="col-span-1 flex flex-col items-center">
+                    <div>
                         <h3 class="text-white font-medium text-center mb-4 text-lg">面具</h3>
                         <!-- 子类纵向排列 -->
                         <div class="flex flex-col gap-4 w-full">
@@ -288,7 +313,7 @@
                     </div>
 
                     <!-- 4. 斗篷大类（无子类，单独显示） -->
-                    <div class="col-span-1 flex flex-col items-center">
+                    <div>
                         <h3 class="text-white font-medium text-center mb-4 text-lg">斗篷</h3>
                         <!-- 子类纵向排列（仅一个） -->
                         <div class="flex flex-col gap-4 w-full">
@@ -304,7 +329,7 @@
                     </div>
 
                     <!-- 5. 背饰大类（含家具类、琴类、玩偶类，冲突） -->
-                    <div class="col-span-1 flex flex-col items-center">
+                    <div>
                         <h3 class="text-white font-medium text-center mb-4 text-lg">背饰</h3>
                         <!-- 子类纵向排列（仅一个） -->
                         <div class="flex flex-col gap-4 w-full">
