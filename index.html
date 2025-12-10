@@ -70,7 +70,16 @@
                 border-radius: 50%;
                 animation: twinkle 2s infinite alternate;
             }
+            /* 核心：1:1比例，同比缩放（最大300px，小屏占视口80%） */
+            .outfit-img-container {
+                width: min(80vw, 300px);
+                height: min(80vw, 300px); /* 严格1:1 */
+                aspect-ratio: 1/1; /* 兜底保证比例 */
+                flex-shrink: 0;
+            }
             .outfit-img {
+                width: 100%;
+                height: 100%;
                 object-fit: cover;
                 transition: transform 0.3s ease;
             }
@@ -86,9 +95,15 @@
                 position: absolute;
                 top: 8px;
                 right: 8px;
+                z-index: 10;
             }
             .will-change-transform {
                 will-change: transform;
+            }
+            /* 适配布局，保证卡片随图片容器缩放 */
+            .outfit-card {
+                width: 100%;
+                max-width: min(80vw, 300px);
             }
         }
     </style>
@@ -115,7 +130,7 @@
         </header>
 
         <!-- 主内容区域 -->
-        <main class="max-w-6xl mx-auto">
+        <main class="max-w-7xl mx-auto">
             <!-- 领取按钮卡片 -->
             <div id="claim-card" class="bg-glass rounded-2xl p-8 md:p-12 shadow-2xl mb-12 text-center transition-all duration-700 transform hover:scale-[1.02]">
                 <div class="mb-8">
@@ -136,77 +151,75 @@
                 </h2>
 
                 <!-- 穿搭清单（5大类布局，含子分类） -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 mb-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 justify-items-center">
                     <!-- 1. 发型大类（含发型、帽子、头饰，无冲突） -->
-                    <div class="col-span-1">
+                    <div class="col-span-1 w-full flex flex-col items-center">
                         <h3 class="text-white font-medium text-center mb-4 text-lg">发型</h3>
-                        <div class="grid grid-cols-1 gap-3 md:gap-4">
+                        <div class="grid grid-cols-1 gap-4 w-full flex flex-col items-center">
                             <div id="hairstyle-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.1s">
                                 <span class="subcategory-tag">发型</span>
-                                <!-- 移动端图片高度调整为28px，适配手机 -->
-                                <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="发型" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="发型" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                             <div id="hat-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.2s">
                                 <span class="subcategory-tag">帽子</span>
-                                <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="帽子" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="帽子" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                             <div id="headwear-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.3s">
                                 <span class="subcategory-tag">头饰</span>
-                                <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="头饰" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="头饰" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 2. 服装大类（核心修改：裤鞋组合/套装二选一） -->
-                    <div class="col-span-1">
+                    <div class="col-span-1 w-full flex flex-col items-center">
                         <h3 class="text-white font-medium text-center mb-4 text-lg">服装</h3>
-                        <div class="grid grid-cols-1 gap-3 md:gap-4">
-                            <div id="clothes-main-container" class="animate-fade-in" style="animation-delay: 0.4s">
+                        <div class="grid grid-cols-1 gap-4 w-full flex flex-col items-center">
+                            <div id="clothes-main-container" class="animate-fade-in w-full flex flex-col items-center" style="animation-delay: 0.4s">
                                 <!-- 套装（1个分类，单独显示） -->
                                 <div id="suit-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 relative hidden">
                                     <span class="subcategory-tag">套装</span>
-                                    <!-- 套装图片高度移动端调整为48px -->
-                                    <div class="h-48 sm:h-52 md:h-64 overflow-hidden bg-sky-dark/30">
-                                        <img src="" alt="套装" class="w-full h-full outfit-img">
+                                    <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                        <img src="" alt="套装" class="outfit-img">
                                     </div>
-                                    <div class="p-2 md:p-3">
-                                        <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                    <div class="p-3 text-center">
+                                        <p class="text-sky-light text-sm"></p>
                                     </div>
                                 </div>
                                 
                                 <!-- 裤鞋组合（2个分类，同时显示） -->
-                                <div id="pants-shoes-container" class="grid grid-cols-1 gap-3 md:gap-4 hidden">
+                                <div id="pants-shoes-container" class="grid grid-cols-1 gap-4 w-full flex flex-col items-center hidden">
                                     <div id="pants-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 relative">
                                         <span class="subcategory-tag">裤子</span>
-                                        <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                            <img src="" alt="裤子" class="w-full h-full outfit-img">
+                                        <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                            <img src="" alt="裤子" class="outfit-img">
                                         </div>
-                                        <div class="p-2 md:p-3">
-                                            <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                        <div class="p-3 text-center">
+                                            <p class="text-sky-light text-sm"></p>
                                         </div>
                                     </div>
                                     <div id="shoes-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 relative">
                                         <span class="subcategory-tag">鞋子</span>
-                                        <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                            <img src="" alt="鞋子" class="w-full h-full outfit-img">
+                                        <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                            <img src="" alt="鞋子" class="outfit-img">
                                         </div>
-                                        <div class="p-2 md:p-3">
-                                            <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                        <div class="p-3 text-center">
+                                            <p class="text-sky-light text-sm"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -215,65 +228,65 @@
                     </div>
 
                     <!-- 3. 面具大类（含面具、项链、眼镜，无冲突） -->
-                    <div class="col-span-1">
+                    <div class="col-span-1 w-full flex flex-col items-center">
                         <h3 class="text-white font-medium text-center mb-4 text-lg">面具</h3>
-                        <div class="grid grid-cols-1 gap-3 md:gap-4">
+                        <div class="grid grid-cols-1 gap-4 w-full flex flex-col items-center">
                             <div id="mask-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.5s">
                                 <span class="subcategory-tag">面具</span>
-                                <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="面具" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="面具" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                             <div id="necklace-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.6s">
                                 <span class="subcategory-tag">项链</span>
-                                <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="项链" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="项链" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                             <div id="glasses-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.7s">
                                 <span class="subcategory-tag">眼镜</span>
-                                <div class="h-28 sm:h-32 md:h-40 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="眼镜" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="眼镜" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 4. 斗篷大类（无子类，单独显示） -->
-                    <div class="col-span-1">
+                    <div class="col-span-1 w-full flex flex-col items-center">
                         <h3 class="text-white font-medium text-center mb-4 text-lg">斗篷</h3>
-                        <div class="grid grid-cols-1 gap-3 md:gap-4">
+                        <div class="grid grid-cols-1 gap-4 w-full flex flex-col items-center">
                             <div id="cape-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.8s">
-                                <div class="h-48 sm:h-52 md:h-64 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="斗篷" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="斗篷" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- 5. 背饰大类（含家具类、琴类、玩偶类，冲突） -->
-                    <div class="col-span-1">
+                    <div class="col-span-1 w-full flex flex-col items-center">
                         <h3 class="text-white font-medium text-center mb-4 text-lg">背饰</h3>
-                        <div class="grid grid-cols-1 gap-3 md:gap-4">
+                        <div class="grid grid-cols-1 gap-4 w-full flex flex-col items-center">
                              <div id="accessory-container" class="outfit-card bg-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:bg-white/20 animate-fade-in relative" style="animation-delay: 0.9s">
                                  <span class="subcategory-tag">背饰</span>
-                                <div class="h-48 sm:h-52 md:h-64 overflow-hidden bg-sky-dark/30">
-                                    <img src="" alt="背饰" class="w-full h-full outfit-img">
+                                <div class="outfit-img-container overflow-hidden bg-sky-dark/30 mx-auto">
+                                    <img src="" alt="背饰" class="outfit-img">
                                 </div>
-                                <div class="p-2 md:p-3">
-                                    <p class="text-sky-light text-center text-xs md:text-sm"></p>
+                                <div class="p-3 text-center">
+                                    <p class="text-sky-light text-sm"></p>
                                 </div>
                             </div>
                         </div>
@@ -281,40 +294,40 @@
                 </div>
 
                 <!-- 随机穿搭评价 -->
-                <div class="bg-white/5 rounded-xl p-4 md:p-6 border border-white/10">
-                    <h3 class="text-white font-medium mb-3 flex items-center text-sm md:text-base">
+                <div class="bg-white/5 rounded-xl p-4 md:p-6 border border-white/10 max-w-[min(80vw,1200px)] mx-auto">
+                    <h3 class="text-white font-medium mb-3 flex items-center text-base">
                         <i class="fa fa-comment text-star-gold mr-2"></i>穿搭评价
                     </h3>
-                    <p id="random-comment" class="text-sky-light leading-relaxed text-xs md:text-sm">
+                    <p id="random-comment" class="text-sky-light leading-relaxed text-sm">
                     </p>
                 </div>
 
                 <!-- 穿搭卡片内水印 -->
-                <div class="mt-6 md:mt-8 text-right">
-                    <span class="inline-block bg-star-gold/20 text-star-gold px-3 md:px-4 py-1 rounded-full text-xs md:text-sm font-medium">
+                <div class="mt-6 md:mt-8 text-right max-w-[min(80vw,1200px)] mx-auto">
+                    <span class="inline-block bg-star-gold/20 text-star-gold px-3 md:px-4 py-1 rounded-full text-sm font-medium">
                         sky小贝原创制作
                     </span>
                 </div>
 
                 <!-- 重新随机按钮 -->
                 <div class="mt-6 md:mt-8 text-center">
-                    <button id="refresh-btn" class="bg-sky-light/80 hover:bg-sky-light text-sky-dark font-medium py-2 px-5 md:px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm md:text-base">
+                    <button id="refresh-btn" class="bg-sky-light/80 hover:bg-sky-light text-sky-dark font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-base">
                         <i class="fa fa-refresh mr-2"></i>重新随机
                     </button>
                 </div>
             </div>
 
             <!-- 明日预告 -->
-            <div class="bg-glass/50 rounded-2xl p-4 md:p-6 text-center">
+            <div class="bg-glass/50 rounded-2xl p-4 md:p-6 text-center max-w-[min(80vw,800px)] mx-auto">
                 <p class="text-white/80 mb-3 md:mb-4 text-sm">想获取更多随机穿搭灵感？</p>
-                <button class="bg-sky-accent/80 hover:bg-sky-accent text-white font-medium py-2 px-5 md:px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm">
+                <button class="bg-sky-accent/80 hover:bg-sky-accent text-white font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105 text-sm">
                     <i class="fa fa-calendar-o mr-2"></i>每日定时更新
                 </button>
             </div>
         </main>
 
         <!-- 页脚 -->
-        <footer class="mt-12 md:mt-16 text-center text-sky-light/70 text-xs md:text-sm pb-8">
+        <footer class="mt-12 md:mt-16 text-center text-sky-light/70 text-sm pb-8">
             <p>© 2025 Sky 光遇穿搭推荐 | sky小贝原创制作</p>
         </footer>
     </div>
