@@ -321,29 +321,29 @@
     <script>
         // ================= 核心配置：图片路径+子分类规则 =================
         // 1. 文件夹路径配置（5大类+子分类）
-        const folderPaths = {
+const folderPaths = {
   // 发型大类（3个子分类）
-  hairstyle: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%8F%91%E5%9E%8B",
-  hat: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%B8%BD%E5%AD%90",
-  headwear: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%A4%B4%E9%A5%B0",
+  hairstyle: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%8F%91%E5%9E%8B",
+  hat: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%B8%BD%E5%AD%90",
+  headwear: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%A4%B4%E9%A5%B0",
 
   // 服装大类（3个子分类）
-  pants: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E8%A3%A4%E5%AD%90",
-  shoes: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E9%9E%8B%E5%AD%90",
-  suit: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%A5%97%E8%A3%85",
+  pants: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E8%A3%A4%E5%AD%90",
+  shoes: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E9%9E%8B%E5%AD%90",
+  suit: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%A5%97%E8%A3%85",
 
   // 面具大类（3个子分类）
-  mask: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%9D%A2%E5%85%B7",
-  necklace: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%A1%B9%E9%93%BE",
-  glasses: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E7%9C%BC%E9%95%9C",
+  mask: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%9D%A2%E5%85%B7",
+  necklace: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%A1%B9%E9%93%BE",
+  glasses: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E7%9C%BC%E9%95%9C",
 
   // 斗篷大类（无子类）
-  cape: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E6%96%97%E7%AF%B7",
+  cape: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%96%97%E7%AF%B7",
 
   // 背饰大类（3个子分类）
-  accessory_furniture: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E5%AE%B6%E5%85%B7%E7%B1%BB",
-  accessory_piano: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%90%B4%E7%B1%BB",
-  accessory_doll: "https://github.com/yubei668/sucai/tree/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%8E%A9%E5%81%B6%E7%B1%BB"
+  accessory_furniture: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E5%AE%B6%E5%85%B7%E7%B1%BB",
+  accessory_piano: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%90%B4%E7%B1%BB",
+  accessory_doll: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%8E%A9%E5%81%B6%E7%B1%BB"
 };
         // 2. 图片配置（按实际文件数量调整）
 const imageConfig = {
@@ -1511,4 +1511,5 @@ const imageConfig = {
 </body>
 
 </html>
+
 
