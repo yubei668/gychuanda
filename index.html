@@ -375,20 +375,21 @@
     </div>
 
     <script>
+// ========== 核心修改：替换所有路径的基础域名 ==========
 const folderPaths = {
-  hairstyle: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%8F%91%E5%9E%8B",
-  hat: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%B8%BD%E5%AD%90",
-  headwear: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%A4%B4%E9%A5%B0",
-  pants: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E8%A3%A4%E5%AD%90",
-  shoes: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E9%9E%8B%E5%AD%90",
-  suit: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%A5%97%E8%A3%85",
-  mask: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%9D%A2%E5%85%B7",
-  necklace: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%A1%B9%E9%93%BE",
-  glasses: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E7%9C%BC%E9%95%9C",
-  cape: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%96%97%E7%AF%B7",
-  accessory_furniture: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E5%AE%B6%E5%85%B7%E7%B1%BB",
-  accessory_piano: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%90%B4%E7%B1%BB",
-  accessory_doll: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%8E%A9%E5%81%B6%E7%B1%BB"
+  hairstyle: "https://cnb.cool/yunbei668/sucai/%E5%8F%91%E5%9E%8B/%E5%8F%91%E5%9E%8B",
+  hat: "https://cnb.cool/yunbei668/sucai/%E5%8F%91%E5%9E%8B/%E5%B8%BD%E5%AD%90",
+  headwear: "https://cnb.cool/yunbei668/sucai/%E5%8F%91%E5%9E%8B/%E5%A4%B4%E9%A5%B0",
+  pants: "https://cnb.cool/yunbei668/sucai/%E6%9C%8D%E8%A3%85/%E5%8D%95%E8%A3%A4%E5%AD%90",
+  shoes: "https://cnb.cool/yunbei668/sucai/%E6%9C%8D%E8%A3%85/%E5%8D%95%E9%9E%8B%E5%AD%90",
+  suit: "https://cnb.cool/yunbei668/sucai/%E6%9C%8D%E8%A3%85/%E5%A5%97%E8%A3%85",
+  mask: "https://cnb.cool/yunbei668/sucai/%E9%9D%A2%E5%85%B7/%E9%9D%A2%E5%85%B7",
+  necklace: "https://cnb.cool/yunbei668/sucai/%E9%9D%A2%E5%85%B7/%E9%A1%B9%E9%93%BE",
+  glasses: "https://cnb.cool/yunbei668/sucai/%E9%9D%A2%E5%85%B7/%E7%9C%BC%E9%95%9C",
+  cape: "https://cnb.cool/yunbei668/sucai/%E6%96%97%E7%AF%B7",
+  accessory_furniture: "https://cnb.cool/yunbei668/sucai/%E8%83%8C%E9%A5%B0/%E5%AE%B6%E5%85%B7%E7%B1%BB",
+  accessory_piano: "https://cnb.cool/yunbei668/sucai/%E8%83%8C%E9%A5%B0/%E7%90%B4%E7%B1%BB",
+  accessory_doll: "https://cnb.cool/yunbei668/sucai/%E8%83%8C%E9%A5%B0/%E7%8E%A9%E5%81%B6%E7%B1%BB"
 };
 const imageConfig = {
     hairstyle: [
