@@ -376,19 +376,19 @@
 
     <script>
 const folderPaths = {
-  hairstyle: "https://gitee.com/p28987/sucai/raw/main/%E5%8F%91%E5%9E%8B/%E5%8F%91%E5%9E%8B",
-  hat: "https://gitee.com/p28987/sucai/raw/main/%E5%8F%91%E5%9E%8B/%E5%B8%BD%E5%AD%90",
-  headwear: "https://gitee.com/p28987/sucai/raw/main/%E5%8F%91%E5%9E%8B/%E5%A4%B4%E9%A5%B0",
-  pants: "https://gitee.com/p28987/sucai/raw/main/%E6%9C%8D%E8%A3%85/%E5%8D%95%E8%A3%A4%E5%AD%90",
-  shoes: "https://gitee.com/p28987/sucai/raw/main/%E6%9C%8D%E8%A3%85/%E5%8D%95%E9%9E%8B%E5%AD%90",
-  suit: "https://gitee.com/p28987/sucai/raw/main/%E6%9C%8D%E8%A3%85/%E5%A5%97%E8%A3%85",
-  mask: "https://gitee.com/p28987/sucai/raw/main/%E9%9D%A2%E5%85%B7/%E9%9D%A2%E5%85%B7",
-  necklace: "https://gitee.com/p28987/sucai/raw/main/%E9%9D%A2%E5%85%B7/%E9%A1%B9%E9%93%BE",
-  glasses: "https://gitee.com/p28987/sucai/raw/main/%E9%9D%A2%E5%85%B7/%E7%9C%BC%E9%95%9C",
-  cape: "https://gitee.com/p28987/sucai/raw/main/%E6%88%98%E8%A1%A3",
-  accessory_furniture: "https://gitee.com/p28987/sucai/raw/main/%E8%83%8C%E9%A5%B0/%E5%AE%B6%E5%85%B7%E7%B1%BB",
-  accessory_piano: "https://gitee.com/p28987/sucai/raw/main/%E8%83%8C%E9%A5%B0/%E7%90%B4%E7%B1%BB",
-  accessory_doll: "https://gitee.com/p28987/sucai/raw/main/%E8%83%8C%E9%A5%B0/%E7%8E%A9%E5%81%B6%E7%B1%BB"
+  hairstyle: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%8F%91%E5%9E%8B",
+  hat: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%B8%BD%E5%AD%90",
+  headwear: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E5%8F%91%E5%9E%8B/%E5%A4%B4%E9%A5%B0",
+  pants: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E8%A3%A4%E5%AD%90",
+  shoes: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%8D%95%E9%9E%8B%E5%AD%90",
+  suit: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%9C%8D%E8%A3%85/%E5%A5%97%E8%A3%85",
+  mask: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%9D%A2%E5%85%B7",
+  necklace: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E9%A1%B9%E9%93%BE",
+  glasses: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E9%9D%A2%E5%85%B7/%E7%9C%BC%E9%95%9C",
+  cape: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E6%96%97%E7%AF%B7",
+  accessory_furniture: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E5%AE%B6%E5%85%B7%E7%B1%BB",
+  accessory_piano: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%90%B4%E7%B1%BB",
+  accessory_doll: "https://raw.githubusercontent.com/yubei668/sucai/08e60443743ff73be256734c29eef0596c86e4c3/%E8%83%8C%E9%A5%B0/%E7%8E%A9%E5%81%B6%E7%B1%BB"
 };
 const imageConfig = {
     hairstyle: [
@@ -1473,30 +1473,16 @@ const imageConfig = {
             setRandomItem('glasses');
             setRandomItem('cape');
 
-// 背饰随机逻辑（修复URL编码）
-const accessoryTypes = ['accessory_furniture', 'accessory_piano', 'accessory_doll'];
-const randomAccessoryType = getRandomItem(accessoryTypes);
-const accessoryItem = getRandomItem(imageConfig[randomAccessoryType]);
+            // 背饰随机逻辑保留
+            const accessoryTypes = ['accessory_furniture', 'accessory_piano', 'accessory_doll'];
+            const randomAccessoryType = getRandomItem(accessoryTypes);
+            const accessoryItem = getRandomItem(imageConfig[randomAccessoryType]);
+            const encodedItemName = encodeURIComponent(accessoryItem);
+            const accessoryPath = `${folderPaths[randomAccessoryType]}/${encodedItemName}`;
 
-// 修复：完整编码背饰的URL路径
-const fullAccessoryPath = `${folderPaths[randomAccessoryType]}/${accessoryItem}`;
-const [accProtocol, accRest] = fullAccessoryPath.split('://');
-const [accDomain, ...accPathParts] = accRest.split('/');
-const accPathToEncode = accPathParts.join('/');
-const encodedAccessoryPath = encodeURI(`/${accPathToEncode}`);
-const accessoryPath = `${accProtocol}://${accDomain}${encodedAccessoryPath}`;
-
-const accessoryContainer = document.getElementById('accessory-container');
-const accImg = accessoryContainer.querySelector('img');
-accImg.src = accessoryPath;
-
-// 新增：背饰图片加载失败兜底
-accImg.onerror = function() {
-    this.src = 'https://via.placeholder.com/100?text=背饰加载失败';
-    console.error(`【背饰加载失败】类型：${randomAccessoryType}，路径：${accessoryPath}`);
-};
-
-accessoryContainer.querySelector('p').textContent = accessoryItem.split('.')[0];
+            const accessoryContainer = document.getElementById('accessory-container');
+            accessoryContainer.querySelector('img').src = accessoryPath;
+            accessoryContainer.querySelector('p').textContent = accessoryItem.split('.')[0];
 
             let accessoryTag = '';
             switch(randomAccessoryType) {
@@ -1512,38 +1498,16 @@ accessoryContainer.querySelector('p').textContent = accessoryItem.split('.')[0];
             document.getElementById('random-comment').textContent = getRandomItem(outfitComments);
         }
 
-function setRandomItem(type) {
-    const items = imageConfig[type];
-    const randomItem = getRandomItem(items);
-    
-    // 第一步：拼接未编码的完整路径（包含中文目录+文件名）
-    const fullPath = `${folderPaths[type]}/${randomItem}`;
-    
-    // 第二步：拆分URL的“协议+域名”和“路径”，仅编码路径部分（避免编码http://）
-    const [protocol, rest] = fullPath.split('://'); // 拆分出 http/https 和后面的部分
-    const [domain, ...pathParts] = rest.split('/'); // 拆分出域名和剩余路径
-    const pathToEncode = pathParts.join('/'); // 重组需要编码的路径部分
-    const encodedPath = encodeURI(`/${pathToEncode}`); // 对中文路径+文件名编码
-    
-    // 第三步：拼接最终的合法URL
-    const itemPath = `${protocol}://${domain}${encodedPath}`;
-    
-    // 第四步：获取图片标签，设置src，并添加加载失败兜底
-    const container = document.getElementById(`${type}-container`);
-    const img = container.querySelector('img');
-    img.src = itemPath;
-    
-    // 新增：图片加载失败时显示占位图+控制台报错（方便排查）
-    img.onerror = function() {
-        // 占位图（可替换为你自己的图片）
-        this.src = 'https://via.placeholder.com/100?text=图片加载失败';
-        // 控制台输出错误路径，方便你排查
-        console.error(`【素材加载失败】类型：${type}，路径：${itemPath}`);
-    };
-    
-    // 设置图片下方的文字（去掉.png后缀）
-    container.querySelector('p').textContent = randomItem.split('.')[0];
-}
+        function setRandomItem(type) {
+            const items = imageConfig[type];
+            const randomItem = getRandomItem(items);
+            const encodedItemName = encodeURIComponent(randomItem);
+            const itemPath = `${folderPaths[type]}/${encodedItemName}`;
+            
+            const container = document.getElementById(`${type}-container`);
+            container.querySelector('img').src = itemPath;
+            container.querySelector('p').textContent = randomItem.split('.')[0];
+        }
 
         function initEventListeners() {
             document.getElementById('claim-btn').addEventListener('click', showRandomOutfit);
@@ -1565,6 +1529,3 @@ function setRandomItem(type) {
     </script>
 </body>
 </html>
-
-
-
